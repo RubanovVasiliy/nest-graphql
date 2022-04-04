@@ -21,7 +21,7 @@ export class BookResolver {
     private readonly authorService: AuthorService,
   ) {}
 
-  @Mutation(() => Book)
+  @Mutation(() => Book, { name: 'createBook', nullable: true })
   createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
     return this.bookService.createBook(createBookInput);
   }

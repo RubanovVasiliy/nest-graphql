@@ -20,7 +20,7 @@ export class AuthorResolver {
     private readonly bookService: BookService,
   ) {}
 
-  @Mutation(() => Author)
+  @Mutation(() => Author, { name: 'createAuthor', nullable: true })
   createAuthor(
     @Args('createAuthorInput') createAuthorInput: CreateAuthorInput,
   ) {
@@ -41,6 +41,6 @@ export class AuthorResolver {
 
   @ResolveField()
   async books(@Parent() author: Author) {
-    return this.bookService.findByAuthorId(author.id);
+    return this.bookService.findByAuthorId(author._id);
   }
 }

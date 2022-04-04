@@ -7,4 +7,7 @@ export class CreateAuthorInput {
 
   @Field()
   name: string;
+
+  @Field()
+  email: string;
 }

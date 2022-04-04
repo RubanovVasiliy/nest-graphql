@@ -3,14 +3,16 @@
 # ------------------------------------------------------
 
 type Author {
-  id: ID!
+  _id: ID!
   name: String!
+  email: String!
   books: [Book!]!
 }
 
 type Book {
-  id: ID!
+  _id: ID!
   title: String!
+  year: Int!
   isbn: String!
   author: Author!
 }
@@ -28,13 +30,14 @@ input PaginationInputType {
 }
 
 type Mutation {
-  createBook(createBookInput: CreateBookInput!): Book!
-  createAuthor(createAuthorInput: CreateAuthorInput!): Author!
+  createBook(createBookInput: CreateBookInput!): Book
+  createAuthor(createAuthorInput: CreateAuthorInput!): Author
 }
 
 input CreateBookInput {
-  id: ID!
+  _id: ID!
   title: String!
+  year: Int!
   isbn: String!
   author: Int!
 }
@@ -42,4 +45,5 @@ input CreateBookInput {
 input CreateAuthorInput {
   id: ID!
   name: String!
+  email: String!
 }

@@ -22,7 +22,7 @@ export class BookService {
   }
 
   async findById(id: number) {
-    const books = this.books.filter((book) => book.id === id);
+    const books = this.books.filter((book) => book._id === id);
     return books.length ? books[0] : null;
   }
 
