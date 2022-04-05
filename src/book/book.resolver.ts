@@ -1,18 +1,9 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { BookService } from './book.service';
 import { Book } from './schema/book.schema';
-import { CreateBookInput } from './dto/create-book.input';
 import { Author } from 'src/author/schema/author.schema';
 import { AuthorService } from 'src/author/author.service';
-import { PaginationInputType } from './dto/pagination.input';
+import { PaginationInputType } from '../dtos/pagination.input';
 
 @Resolver(() => Book)
 export class BookResolver {
@@ -20,11 +11,6 @@ export class BookResolver {
     private readonly bookService: BookService,
     private readonly authorService: AuthorService,
   ) {}
-
-  @Mutation(() => Book, { name: 'createBook', nullable: true })
-  createBook(@Args('createBookInput') createBookInput: CreateBookInput) {
-    return this.bookService.createBook(createBookInput);
-  }
 
   @Query(() => [Book], { name: 'findAllBooks', nullable: true })
   findAll(
@@ -34,12 +20,12 @@ export class BookResolver {
   }
 
   @Query(() => Book, { name: 'findBookById', nullable: true })
-  findById(@Args('id', { type: () => Int }) id: number) {
+  findById(@Args('id', { type: () => String }) id: string) {
     return this.bookService.findById(id);
   }
 
   @ResolveField(() => Author)
-  async author(@Parent() book: Book) {
+  author(@Parent() book: Book) {
     return this.authorService.findById(book.author);
   }
 }

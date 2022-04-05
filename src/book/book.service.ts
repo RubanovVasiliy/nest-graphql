@@ -1,32 +1,30 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookInput } from './dto/create-book.input';
-import { Book } from './schema/book.schema';
-import books from 'src/data/books';
+import { Inject, Injectable } from '@nestjs/common';
+import * as Nano from 'nano';
 
 @Injectable()
 export class BookService {
-  books: Partial<Book>[];
-
-  constructor() {
-    this.books = books;
-  }
-
-  async createBook(book: CreateBookInput) {
-    this.books = [book, ...this.books];
-    return book;
-  }
+  constructor(
+    @Inject('DATABASE_BOOKS_CONNECTION')
+    private db: Nano.DocumentScope<unknown>,
+  ) {}
 
   async findAll(take = 20, skip = 0) {
-    const books = this.books.slice(skip, take + skip);
-    return books;
+    const query: Nano.MangoQuery = { skip: skip, limit: take, selector: {} };
+    const books = await (await this.db).find(query);
+    return books.docs;
   }
 
-  async findById(id: number) {
-    const books = this.books.filter((book) => book._id === id);
-    return books.length ? books[0] : null;
+  async findById(id: string) {
+    const book = await (await this.db).get(id);
+    return book ? book : null;
   }
 
-  async findByAuthorId(authorId: number) {
-    return this.books.filter((book) => book.author === authorId);
+  async findByAuthorId(authorId: string) {
+    const book = await (
+      await this.db
+    ).find({
+      selector: { author: { $eq: authorId } },
+    });
+    return book.docs.length ? book.docs : null;
   }
 }

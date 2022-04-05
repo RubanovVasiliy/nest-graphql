@@ -19,31 +19,12 @@ type Book {
 
 type Query {
   findAllBooks(pagination: PaginationInputType): [Book!]
-  findBookById(id: Int!): Book
+  findBookById(id: String!): Book
   findAllAuthors(pagination: PaginationInputType): [Author!]
-  findAuthorById(id: Int!): Author
+  findAuthorById(id: String!): Author
 }
 
 input PaginationInputType {
   take: Int
   skip: Int
-}
-
-type Mutation {
-  createBook(createBookInput: CreateBookInput!): Book
-  createAuthor(createAuthorInput: CreateAuthorInput!): Author
-}
-
-input CreateBookInput {
-  _id: ID!
-  title: String!
-  year: Int!
-  isbn: String!
-  author: Int!
-}
-
-input CreateAuthorInput {
-  id: ID!
-  name: String!
-  email: String!
 }
