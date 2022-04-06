@@ -4,7 +4,7 @@ import * as Nano from 'nano';
 @Injectable()
 export class AuthorService {
   constructor(
-    @Inject('DATABASE_AUTHORS_CONNECTION')
+    @Inject('DATABASE_CONNECTION')
     private db: Nano.DocumentScope<unknown>,
   ) {}
 

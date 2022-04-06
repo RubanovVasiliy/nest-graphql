@@ -2,7 +2,7 @@ import * as Nano from 'nano';
 
 export class CouchDB {
   async connect(connectioString: string, dbName: string, document?: object[]) {
-    const nano = Nano(connectioString);
+    const nano = Nano('http://admin:adminpass@couchdb:5984');
     const dbList = await nano.db.list();
     try {
       if (!dbList.includes(dbName)) {

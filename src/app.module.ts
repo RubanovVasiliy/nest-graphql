@@ -5,17 +5,13 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule } from '@nestjs/config';
 
-const ENV = process.env.NODE_ENV;
-
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
     }),
-    ConfigModule.forRoot({
-      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
-    }),
+    ConfigModule.forRoot({ envFilePath: `.${process.env.NODE_ENV}.env` }),
     BookModule,
     AuthorModule,
   ],
