@@ -1,21 +1,33 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as Nano from 'nano';
+import { PaginationInputType } from 'src/dtos/pagination.input';
 
 @Injectable()
 export class AuthorService {
   constructor(
-    @Inject('DATABASE_CONNECTION')
+    @Inject('DATABASE_AUTHORS_CONNECTION')
     private db: Nano.DocumentScope<unknown>,
   ) {}
 
-  async findAll(take = 20, skip = 0) {
-    const query: Nano.MangoQuery = { skip: skip, limit: take, selector: {} };
+  async findAll(pagination?: PaginationInputType) {
+    const query: Nano.MangoQuery = {
+      skip: pagination.skip,
+      limit: pagination.take,
+      selector: {},
+      execution_stats: true,
+    };
     const authors = await (await this.db).find(query);
+    console.log(authors.execution_stats);
     return authors.docs;
   }
 
   async findById(id: string) {
-    const author = await (await this.db).get(id);
-    return author ? author : null;
+    let author: Nano.DocumentGetResponse = null;
+    try {
+      author = await (await this.db).get(id);
+    } catch (e) {
+      console.log(e);
+    }
+    return author;
   }
 }

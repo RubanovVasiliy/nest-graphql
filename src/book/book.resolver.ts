@@ -16,7 +16,7 @@ export class BookResolver {
   findAll(
     @Args('pagination', { nullable: true }) pagination?: PaginationInputType,
   ) {
-    return this.bookService.findAll(pagination?.take, pagination?.skip);
+    return this.bookService.findAll(pagination);
   }
 
   @Query(() => Book, { name: 'findBookById', nullable: true })

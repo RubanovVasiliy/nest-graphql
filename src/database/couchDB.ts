@@ -1,10 +1,10 @@
 import * as Nano from 'nano';
-import * as authors from '../utils/authors.json';
-import * as books from '../utils/books.json';
 
 export class CouchDB {
-  async connect() {
-    const dbName = process.env.DB || 'authors';
+  async connect(
+    dbName: string,
+    document,
+  ): Promise<Nano.DocumentScope<unknown>> {
     const connectionString = this.createConnectionString();
 
     try {
@@ -15,7 +15,7 @@ export class CouchDB {
         await nano.db.create(dbName);
         const db = nano.use(dbName);
         //console.log(`database ${dbName} created successfully`);
-        await db.bulk({ docs: [...books.data, ...authors.data] });
+        await db.bulk({ docs: document.data });
         return db;
       } else {
         const db = nano.use(dbName);
