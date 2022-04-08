@@ -6,7 +6,6 @@ export class CouchDB {
     document,
   ): Promise<Nano.DocumentScope<unknown>> {
     const connectionString = this.createConnectionString();
-
     try {
       const nano = Nano(connectionString);
       const dbList = await nano.db.list();

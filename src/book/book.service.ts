@@ -10,6 +10,9 @@ export class BookService {
   ) {}
 
   async findAll(pagination?: PaginationInputType) {
+    if (pagination?.take > 25) {
+      pagination.take = 25;
+    }
     const query: Nano.MangoQuery = {
       skip: pagination.skip,
       limit: pagination.take,
@@ -17,7 +20,7 @@ export class BookService {
       execution_stats: true,
     };
     const books = await (await this.db).find(query);
-    console.log(books.execution_stats);
+    console.log(books);
     return books.docs;
   }
 

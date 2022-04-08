@@ -1,40 +1,50 @@
-version: '2.2'
+version: '3.8'
 
 services:
-  main:
-    container_name: main
-    build:
-      context: .
-    env_file:
-      - .prod.env
-    volumes:
-      - .:/app
-      - /app/node_modules
-    ports:
-      - 5000:5000
-      - 9229:9229 
-    depends_on:
-      - couchdb
-    restart: always
-
-  couchdb:
-    container_name: couchdb
-    image: couchdb:2
-    env_file:
-      - .dev.env 
-    restart: always
-    ports:
-      - "5984:5984"
-    volumes:
+    prod:
+        container_name: nestjs_api_prod
+        image: nestjs-api-prod:1.0.0
+        build:
+            context: .
+            target: production
+            dockerfile: ./Dockerfile
+        command: npm run start:prod
+        ports:
+            - 5000:5000
+            - 9229:9229
+        networks:
+            - nesjs-network
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        restart: unless-stopped
+        depends_on:
+          - couchdb
+    couchdb:
+        container_name: couchdb
+        image: couchdb:2
+        env_file:
+          - .dev.env 
+        restart: always
+        ports:
+         - "5984:5984"
+        volumes:
         - ./dbdata:/opt/couchdb/data
-
-  initializer:
-    image: curlimages/curl
-    deploy:
-      restart_policy:
-        condition: on-failure
-    depends_on:
-      - couchdb
-    command: ["sh","-c","sleep 15 && curl -u admin:adminpass -X PUT couchdb:5984/_users && curl -u admin:adminpass -X PUT couchdb:5984/_replicator && curl -u admin:adminpass -X PUT couchdb:5984/_global_changes"]
+    initializer:
+        image: curlimages/curl
+        restart: always
+        depends_on:
+          - couchdb
+        command: [
+            "sh",
+            "-c",
+            "sleep 15",
+            "curl -u admin:adminpass -X PUT couchdb:5984/_users && 
+            curl -u admin:adminpass -X PUT couchdb:5984/_replicator && 
+            curl -u admin:adminpass -X PUT couchdb:5984/_global_changes"
+          ]
 volumes:
-  couchdb-data:
+    couchdb-data: 
+
+networks:
+    nesjs-network:

@@ -1,6 +1,6 @@
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A simple Graph API on the Node.js platform using Typescript. CouchDB is used for data storage.
 
 ## Installation
 
@@ -11,34 +11,18 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
+$ docker-compose up
+
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## Usage
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+[http://localhost:5000/graphql](http://localhost:5000/graphql)
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Author - [Rubanov Vasiliy](https://github.com/RubanovVasiliy)
 
 ## License
 

@@ -10,6 +10,9 @@ export class AuthorService {
   ) {}
 
   async findAll(pagination?: PaginationInputType) {
+    if (pagination?.take > 25) {
+      pagination.take = 25;
+    }
     const query: Nano.MangoQuery = {
       skip: pagination.skip,
       limit: pagination.take,
@@ -17,7 +20,7 @@ export class AuthorService {
       execution_stats: true,
     };
     const authors = await (await this.db).find(query);
-    console.log(authors.execution_stats);
+    console.log(authors);
     return authors.docs;
   }
 

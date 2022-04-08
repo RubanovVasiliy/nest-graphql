@@ -1,0 +1,8 @@
+{
+  "indexes": [
+    {
+      "index": { "fields": ["_id"] },
+      "name": "fooindex"
+    }
+  ]
+}
