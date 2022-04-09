@@ -1,50 +1,46 @@
 version: '3.8'
 
 services:
-    prod:
-        container_name: nestjs_api_prod
-        image: nestjs-api-prod:1.0.0
-        build:
-            context: .
-            target: production
-            dockerfile: ./Dockerfile
-        command: npm run start:prod
+    main:
+        container_name: nestjs_api
+        image: nestjs-api:1.0.0
+        env_file:
+            - .dev.env
+        build: .
+        command: npm run start:dev
         ports:
             - 5000:5000
             - 9229:9229
-        networks:
-            - nesjs-network
         volumes:
             - .:/usr/src/app
             - /usr/src/app/node_modules
-        restart: unless-stopped
+        restart: always
         depends_on:
-          - couchdb
+            couchdb:
+                condition: service_started
     couchdb:
         container_name: couchdb
-        image: couchdb:2
+        image: couchdb:3.2
         env_file:
-          - .dev.env 
+            - .dev.env
         restart: always
         ports:
-         - "5984:5984"
+            - 5984:5984
         volumes:
-        - ./dbdata:/opt/couchdb/data
+            - ./dbdata:/opt/couchdb/data
     initializer:
         image: curlimages/curl
-        restart: always
+        deploy:
+            restart_policy:
+                condition: on-failure
         depends_on:
-          - couchdb
+            - couchdb
         command: [
             "sh",
             "-c",
-            "sleep 15",
-            "curl -u admin:adminpass -X PUT couchdb:5984/_users && 
+            "sleep 15 && curl -u admin:adminpass -X PUT couchdb:5984/_users && 
             curl -u admin:adminpass -X PUT couchdb:5984/_replicator && 
             curl -u admin:adminpass -X PUT couchdb:5984/_global_changes"
-          ]
+        ]
 volumes:
-    couchdb-data: 
-
-networks:
-    nesjs-network:
+    couchdb-data:
