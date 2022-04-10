@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import * as Nano from 'nano';
-import { PaginationInputType } from 'src/dtos/pagination.input';
 
 @Injectable()
 export class AuthorService {
