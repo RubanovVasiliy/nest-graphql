@@ -15,7 +15,7 @@ export class AuthorResolver {
   findAll(
     @Args('pagination', { nullable: true }) pagination?: PaginationInputType,
   ) {
-    return this.authorService.findAll(pagination);
+    return this.authorService.findAll(pagination?.take, pagination?.skip);
   }
 
   @Query(() => Author, { name: 'findAuthorById', nullable: true })

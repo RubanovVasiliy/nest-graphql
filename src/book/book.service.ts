@@ -9,13 +9,13 @@ export class BookService {
     private db: Nano.DocumentScope<unknown>,
   ) {}
 
-  async findAll(pagination?: PaginationInputType) {
-    if (pagination?.take > 25) {
-      pagination.take = 25;
+  async findAll(take = 25, skip = 0) {
+    if (take > 25) {
+      take = 25;
     }
     const query: Nano.MangoQuery = {
-      skip: pagination.skip,
-      limit: pagination.take,
+      skip: skip,
+      limit: take,
       selector: {},
       execution_stats: true,
     };
