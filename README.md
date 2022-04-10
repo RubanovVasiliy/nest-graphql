@@ -2,21 +2,15 @@
 
 A simple Graph API on the Node.js platform using Typescript. CouchDB is used for data storage.
 
-## Installation
-
-```bash
-$ npm install
-```
-
 ## Running the app
 
 ```bash
 $ docker-compose up
-
-$ npm run start
 ```
 
 ## Usage
+
+Database will start automatically, indexes and data will load automatically.
 
 [http://localhost:5000/graphql](http://localhost:5000/graphql)
 
