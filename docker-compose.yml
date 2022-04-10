@@ -34,7 +34,8 @@ services:
             restart_policy:
                 condition: on-failure
         depends_on:
-            - couchdb
+            main:
+                condition: service_started
         command: [
             "sh",
             "-c",
