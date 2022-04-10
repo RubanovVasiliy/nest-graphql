@@ -1,6 +1,6 @@
 import { CouchDB } from './couchDB';
-import * as authors from '../utils/authors.json';
-import * as books from '../utils/books.json';
+import * as authors from '../data/authors.json';
+import * as books from '../data/books.json';
 
 export const databaseProviders = [
   {
